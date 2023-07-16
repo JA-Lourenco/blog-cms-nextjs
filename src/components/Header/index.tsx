@@ -1,5 +1,6 @@
 import Image from "next/image";
-import Link from "next/link";
+
+import { ActiveLink } from "../ActiveLink";
 
 import logo from "../../../public/images/logo.svg";
 
@@ -9,16 +10,24 @@ export function Header() {
   return (
     <header className={styles.headerContainer}>
       <div className={styles.headerContent}>
-        <a>
+        <a href="/">
           <Image src={logo} alt="logo" />
         </a>
 
-        <nav className="">
-          <Link href="/">Home</Link>
+        <nav>
+          <ActiveLink title="Home" href="/" activeClassName={styles.active} />
 
-          <Link href="/posts">Posts</Link>
+          <ActiveLink
+            title="Posts"
+            href="/posts"
+            activeClassName={styles.active}
+          />
 
-          <Link href="/about">About Us</Link>
+          <ActiveLink
+            title="About Us"
+            href="/about"
+            activeClassName={styles.active}
+          />
         </nav>
 
         <a href="#" type="button" className={styles.startButton}>
