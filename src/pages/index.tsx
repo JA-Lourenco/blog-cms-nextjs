@@ -1,11 +1,43 @@
+import { GetStaticProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
+
+import { createClient } from "@/prismicio";
+import { asText, asLink } from "@prismicio/client";
 
 import techs from "../../public/images/techs.svg";
 
 import styles from "../styles/home.module.scss";
 
-export default function Home() {
+interface ContentProps {
+  title: string;
+  subTitle: string;
+  linkAction: string;
+  mobileTitle: string;
+  mobileContent: string;
+  mobileImage: string;
+  webImage: string;
+  webTitle: string;
+  webContent: string;
+}
+
+interface HomeProps {
+  content: ContentProps;
+}
+
+export default function Home({ content }: HomeProps) {
+  const {
+    title,
+    subTitle,
+    linkAction,
+    mobileTitle,
+    mobileContent,
+    mobileImage,
+    webImage,
+    webTitle,
+    webContent,
+  } = content;
+
   return (
     <>
       <Head>
@@ -15,16 +47,11 @@ export default function Home() {
       <main className={styles.container}>
         <div className={styles.containerHeader}>
           <section className={styles.ctaText}>
-            <h1>Take the next step!</h1>
+            <h1>{title}</h1>
 
-            <span>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta
-              explicabo, veniam recusandae assumenda cumque reiciendis tempora?
-              At velit tempora accusantium laudantium! Doloremque ullam
-              perspiciatis atque blanditiis tempore aliquam eum quasi?
-            </span>
+            <span>{subTitle}</span>
 
-            <a>
+            <a href={linkAction} target="_blank">
               <button>START NOW</button>
             </a>
           </section>
@@ -36,33 +63,23 @@ export default function Home() {
 
         <div className={styles.sectionContent}>
           <section>
-            <h2>Learn now! How to create apps for Android and iOS</h2>
+            <h2>{mobileTitle}</h2>
 
-            <span>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint
-              dolor maiores vitae. Veniam, est deserunt! Delectus rem beatae
-              doloribus explicabo ipsa sint, eveniet illo, cumque earum
-              repellendus nam? Autem, repellendus!
-            </span>
+            <span>{mobileContent}</span>
           </section>
 
-          <img src="/images/demoApp.png" alt="App Dev" />
+          <img src={mobileImage} alt="App Dev" />
         </div>
 
         <hr className={styles.divisor} />
 
         <div className={styles.sectionContent}>
-          <img src="/images/webDev.png" alt="Web Dev" />
+          <img src={webImage} alt="Web Dev" />
 
           <section>
-            <h2>You can also create systems for web. Your own social media</h2>
+            <h2>{webTitle}</h2>
 
-            <span>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis
-              odio magni laborum, iusto officia totam perferendis vitae
-              recusandae consequatur nemo? Corrupti accusantium officia vel nam
-              blanditiis voluptate beatae placeat itaque.
-            </span>
+            <span>{webContent}</span>
           </section>
         </div>
 
@@ -76,7 +93,7 @@ export default function Home() {
 
           <span>Lorem ipsum dolor sit amet consectetur adipisicing elit.</span>
 
-          <a href="">
+          <a href={linkAction} target="_blank">
             <button>ACCESS CLASS!</button>
           </a>
         </div>
@@ -84,3 +101,26 @@ export default function Home() {
     </>
   );
 }
+
+export const getStaticProps: GetStaticProps = async () => {
+  const client = createClient();
+
+  const { data } = await client.getByUID("home", "take-the-next-step");
+
+  const content = {
+    title: asText(data.title),
+    subTitle: asText(data.subtitle),
+    linkAction: asLink(data.linkaction),
+    mobileTitle: asText(data.mobiletitle),
+    mobileContent: asText(data.mobilecontent),
+    mobileImage: data.mobileimage.url,
+    webImage: data.webimage.url,
+    webTitle: asText(data.webtitle),
+    webContent: asText(data.webcontent),
+  };
+
+  return {
+    props: { content: content },
+    revalidate: 60 * 2,
+  };
+};
