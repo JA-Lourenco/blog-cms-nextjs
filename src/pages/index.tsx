@@ -120,7 +120,7 @@ export const getStaticProps: GetStaticProps = async () => {
   };
 
   return {
-    props: { content: content },
+    props: { content },
     revalidate: 60 * 2,
   };
 };
