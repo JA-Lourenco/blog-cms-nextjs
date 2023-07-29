@@ -8,6 +8,8 @@ import Image from "next/image";
 import { createClient } from "@/prismicio";
 import { asText } from "@prismicio/client";
 
+import { blurDataURL } from "@/utils";
+
 import {
   FiChevronLeft,
   FiChevronsLeft,
@@ -64,7 +66,7 @@ export default function Posts({ content, page, totalPages }: PostsProps) {
           width={720}
           height={410}
           placeholder="blur"
-          blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mMMqgcAASkA0zyeH6YAAAAASUVORK5CYII="
+          blurDataURL={blurDataURL}
         />
 
         <strong>{title}</strong>
