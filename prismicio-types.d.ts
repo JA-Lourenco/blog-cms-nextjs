@@ -266,6 +266,36 @@ export type PostDocument<Lang extends string = string> =
 
 export type AllDocumentTypes = AboutDocument | HomeDocument | PostDocument;
 
+/**
+ * Default variation for Example Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type ExampleSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Record<string, never>,
+  never
+>;
+
+/**
+ * Slice variation for *Example*
+ */
+type ExampleSliceVariation = ExampleSliceDefault;
+
+/**
+ * Example Shared Slice
+ *
+ * - **API ID**: `example`
+ * - **Description**: Example
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type ExampleSlice = prismic.SharedSlice<
+  "example",
+  ExampleSliceVariation
+>;
+
 declare module "@prismicio/client" {
   interface CreateClient {
     (
@@ -283,6 +313,9 @@ declare module "@prismicio/client" {
       PostDocument,
       PostDocumentData,
       AllDocumentTypes,
+      ExampleSlice,
+      ExampleSliceVariation,
+      ExampleSliceDefault,
     };
   }
 }
